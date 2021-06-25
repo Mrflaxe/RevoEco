@@ -1,0 +1,61 @@
+# Частые ошибки
+error:
+  no-args: "&cНеобходимые аргументы не указаны. Используйте '/re help' для помощи."
+  unknown-subcommand: "&cНеизвестная команда. Используйте '/re help' для помощи."
+  wrong-syntax: "&cНеверное использование команды. Используйте '/re help' для помощи."
+  only-for-players: "&cЭта команда доступна только игроку."
+  no-permissions: "&cНедостаточно прав."
+  arg-is-not-int: "&cАргумент '%arg%' должен быть целым числом."
+  player-not-found: "&cИгрок %player% не найден."
+  parameter-value-required: "&cДля данной команды должен быть указан параметр '%parameter%'"
+
+  # Дополнительные ошибки
+  no-enough: "&cНа вашем балансе не хватает денег для проведения данной операции."
+  self-trans: "&cВы не можете перечислить себе деньги!"
+  no-profile: "&cБаланс игрока &b%player% &cне зарегестрирован."
+  low-page: "&cНомер страницы не может быть меньше 1."
+
+command:
+
+  balance:
+    self: "&eНа вашем балансе &b$%count%"
+    other: "&eНа балансе игрока &b%player% &b$%count%"
+
+  give: 
+    to-sender: "&2Баланс игрока &b%player% &2пополнен на &b$%count%"
+    to-reciver: "&2Ваш баланс был пополнен на &e$%count%"
+
+  take: 
+    to-sender: "&2С баланса игрока &b%player% &2списано &b$%count%"
+    to-reciver: "&2С вашего баланса списано &e$%count%"
+
+  pay:
+    to-sender: "&2Вы перечислили &b$%count% &2игроку &b%player%"
+    to-reciver: "&2Вы получили &b$%count% &2от игрока &b%player%"
+
+  configrefresh: "&eКонфиги перезагружены."
+
+  nullify: "&eБаланс иигрока &b%player% &eобнулён."
+  globalnullify: "&eБаланс всех игроков был обнулён."
+
+  baltop:
+    empty-page: "&9Эта страница пуста"
+    head: "&9Топ игроков по балансу &8|| &9Страница: &e%page%"
+    place: "&9%place%. &b%name% &8- &e%balance%$"
+
+  help:
+    header: "   &7Помощь по RevoEco"
+    body: " &b/%command% &f&l- &f%description%"
+    footer: " "
+    # Описания команд
+    descriptions:
+      help: 'Показать эту страницу'
+      balance: "Показать ваш баланс/баланс игрока"
+      baltop: "Показать список самых богатых игроков"
+
+    # Подстановки для команд
+    # Будут использованы после самих команд, если это будет нужно
+    arguments:
+      player-req: '<игрок>'
+      player-opt: '[игрок]'
+      page: '[страница]'

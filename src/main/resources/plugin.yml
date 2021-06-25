@@ -1,0 +1,37 @@
+name: ${project.name}
+main: ru.mrflaxe.revoeco.RevoEco
+author: Mrflaxe
+api-version: 1.16 
+version: ${project.version}
+
+depend: [SKLibrary]
+
+commands:
+  revoeco:
+    aliases: [reco]
+    usage: /reco
+  balance:
+    aliases: [money, bal]
+    usage: /balance
+  balancetop:
+    aliases: [baltop]
+    usage: /baltop
+  pay:
+    usage: /pay
+
+permissions:
+  reco.command.revoeco:
+    default: false
+    description: usage all subcommands of the plugin
+  reco.command.balance:
+    default: true
+  reco.command.pay:
+    default: true
+  reco.command.configrefresh:
+    default: op
+  reco.command.take:
+    default: op
+  reco.command.give:
+    default: op
+  reco.command.globalnullify:
+    default: op
