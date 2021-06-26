@@ -4,6 +4,7 @@ import ru.mrflaxe.revoeco.RevoEco;
 import ru.mrflaxe.revoeco.commands.sub.SubcommandConfigRefresh;
 import ru.mrflaxe.revoeco.commands.sub.SubcommandGive;
 import ru.mrflaxe.revoeco.commands.sub.SubcommandGlobalNullify;
+import ru.mrflaxe.revoeco.commands.sub.SubcommandHelp;
 import ru.mrflaxe.revoeco.commands.sub.SubcommandNullify;
 import ru.mrflaxe.revoeco.commands.sub.SubcommandTake;
 import ru.mrflaxe.revoeco.database.DatabaseManager;
@@ -20,6 +21,7 @@ public class SubcommandHandler extends ModifiedDispatcher {
         super.setExecutor("configrefresh", new SubcommandConfigRefresh(messages, plugin));
         super.setExecutor("nullify", new SubcommandNullify(messages, databaseManager));
         super.setExecutor("globalnullify", new SubcommandGlobalNullify(messages, databaseManager));
+        super.setExecutor("help", new SubcommandHelp(messages));
         
         super.register(plugin);
     }
