@@ -35,3 +35,7 @@ permissions:
     default: op
   reco.command.globalnullify:
     default: op
+  reco.command.history:
+    default: true
+  reco.command.history.other:
+    default: op

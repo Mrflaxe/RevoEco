@@ -28,6 +28,7 @@ public class SubcommandGlobalNullify extends PermissibleSubcommand {
         List<Profile> profiles = databaseManager.getAllProfiles();
         
         profiles = profiles.stream()
+                .peek(profile -> databaseManager.addTransaction(profile.getName(), 0, profile.getBalance(), null, "nullify"))
                 .peek(profile -> profile.setBalance(0))
                 .collect(Collectors.toList());
         

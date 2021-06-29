@@ -33,8 +33,12 @@ public class SubcommandNullify extends ArgumentableSubcommand {
         }
         
         Profile profile = databaseManager.getProfileById(name);
+        int balanceBefore = profile.getBalance();
+        
         profile.setBalance(0);
         databaseManager.updateProfile(profile);
+        
+        databaseManager.addTransaction(name, 0, balanceBefore, null, "nullify");
         
         messages.sendFormatted(sender, "command.nullify", "%player%", name);
     }
@@ -50,6 +54,7 @@ public class SubcommandNullify extends ArgumentableSubcommand {
                 .map(Profile::getName)
                 .filter(n -> n.startsWith(arg))
                 .collect(Collectors.toList());
+        
         
         return suggestions;
     }

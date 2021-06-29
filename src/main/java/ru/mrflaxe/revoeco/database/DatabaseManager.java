@@ -18,12 +18,14 @@ public class DatabaseManager {
     private final ConnectionSource connection;
     
     private final Dao<Profile, String> profileDao;
+    private final Dao<Transaction, String> transactionDao;
     
     public DatabaseManager(Plugin plugin, Database database) throws SQLException {
         logger = plugin.getLogger();
         connection = database.getConnection();
         
         profileDao = DaoManager.createDao(connection, Profile.class);
+        transactionDao = DaoManager.createDao(connection, Transaction.class);
     }
     
     public void shutdown() {
@@ -91,7 +93,7 @@ public class DatabaseManager {
         Profile profile = getOrCreateProfile(name);
         int balance = profile.getBalance();
         
-        return balance > sum;
+        return balance >= sum;
     }
     
     public boolean hasProfile(String name) {
@@ -103,6 +105,41 @@ public class DatabaseManager {
             return profileDao.queryForAll();
         } catch (SQLException e) {
             logger.severe("Failed to get all profile data from the database: " + e.getLocalizedMessage());
+            return null;
+        }
+    }
+    
+    
+    /*
+     *       Transaction table
+     */
+    
+    public void addTransaction(
+                    String balanceOwner,
+                    int balanceAfter,
+                    int balanceBefore,
+                    String involved,
+                    String type) {
+        
+        Transaction transaction = new Transaction(
+                        balanceOwner,
+                        balanceAfter,
+                        balanceBefore,
+                        involved,
+                        type);
+        
+        try {
+            transactionDao.create(transaction);
+        } catch (SQLException e) {
+            logger.severe("Failed to create transaction data in database: " + e.getLocalizedMessage());
+        }
+    }
+    
+    public List<Transaction> getTransactionsByPlayer(String name) {
+        try {
+            return transactionDao.queryForEq("owner", name);
+        } catch (SQLException e) {
+            logger.severe("Failed to get transaction history from database: " + e.getLocalizedMessage());
             return null;
         }
     }

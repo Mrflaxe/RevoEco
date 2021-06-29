@@ -29,11 +29,6 @@ public class SubcommandTake extends ArgumentableSubcommand {
     protected void executeCommand(CommandSender sender, CommandArguments args) {
         String name = args.get(0);
         
-        if(!databaseManager.hasProfile(name)) {
-            messages.sendFormatted(sender, "error.no-profile", "%player%", name);
-            return;
-        }
-        
         int count = args.getAsInteger(1);
         
         if(count == -1) {
@@ -41,29 +36,45 @@ public class SubcommandTake extends ArgumentableSubcommand {
             return;
         }
         
-        Profile profile = databaseManager.getProfileById(name);
+        if(count == 0) {
+            messages.getAndSend(sender, "error.not-positive-arg");
+            return;
+        }
+        
+        Profile profile = databaseManager.getOrCreateProfile(name);
+        int balanceBefore = profile.getBalance();
+        
         profile.add(count * -1);
+        int balanceAfter = profile.getBalance();
+        
         databaseManager.updateProfile(profile);
+        databaseManager.addTransaction(name, balanceAfter, balanceBefore, null, "admin");
         
         messages.sendFormatted(sender, "command.take.to-sender", "%player%", name, "%count%", count);
         
         Player reciver = Bukkit.getPlayer(name);
-        if(reciver != null) messages.sendFormatted(sender, "command.take.to-reciver", "%count%", count);
+        if(reciver != null) messages.sendFormatted(reciver, "command.take.to-reciver", "%count%", count);
     }
     
     @Override
     protected List<String> executeTabCompletion(CommandSender sender, CommandArguments args) {
+        List<String> suggestions = Bukkit.getOnlinePlayers().stream()
+                .map(Player::getName)
+                .collect(Collectors.toList());
+        
         String arg = args.get(0).toLowerCase();
         
         List<Profile> profiles = databaseManager.getAllProfiles();
         if(profiles == null) return null;
         
-        List<String> suggestions = profiles.stream()
+        List<String> OfflineRegisteredSuggestions = profiles.stream()
                 .map(Profile::getName)
+                .filter(n -> !suggestions.contains(n))
                 .filter(n -> n.startsWith(arg))
                 .collect(Collectors.toList());
         
+        suggestions.addAll(OfflineRegisteredSuggestions);
+        
         return suggestions;
     }
-
 }

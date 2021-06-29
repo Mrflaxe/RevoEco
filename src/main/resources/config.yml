@@ -12,3 +12,5 @@ database:
 
   # SQLite configuration
   file: database.db
+
+dateformat-pattern: "dd.MM.yy - kk:mm:ss"

@@ -39,24 +39,24 @@ public class CommandBalancetop extends PermissibleCommand {
             return;
         }
         
-        message.add(" ");
-        
-        String head = messages.getFormatted("command.baltop.head", "%page%", page);
-        message.add(head);
-        
         int dozen = (page - 1) * 10;
         List<Profile> sortedProfiles = sortProfiles();
         
-        if(sortedProfiles.size() < dozen + 1) {
-            messages.getAndSend(sender, " ");
+        if(sortedProfiles.size() <= dozen) {
+            sender.sendMessage("");
             messages.getAndSend(sender, "command.baltop.empty-page");
             return;
         }
         
+        message.add(" ");
+        
+        String head = messages.getFormatted("command.baltop.head", "%page%", page, "%pages%", sortedProfiles.size()/10 + 1);
+        message.add(head);
+        
         for(int i = 1; i <= 10; i++) {
             int place = i + dozen;
             
-            if(i > sortedProfiles.size()) break;
+            if(place > sortedProfiles.size()) break;
             
             Profile profile = sortedProfiles.get(place - 1);
             String name = profile.getName();

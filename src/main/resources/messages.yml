@@ -14,24 +14,25 @@ error:
   self-trans: "&cВы не можете перечислить себе деньги!"
   no-profile: "&cБаланс игрока &b%player% &cне зарегестрирован."
   low-page: "&cНомер страницы не может быть меньше 1."
+  not-positive-arg: "&cЧисло должно быть больше нуля."
 
 command:
 
   balance:
-    self: "&eНа вашем балансе &b$%count%"
-    other: "&eНа балансе игрока &b%player% &b$%count%"
+    self: "&3Ваш баланс: %color%count%$"
+    other: "&3Баланс игрока &b%player%: %color$%count%"
 
   give: 
-    to-sender: "&2Баланс игрока &b%player% &2пополнен на &b$%count%"
-    to-reciver: "&2Ваш баланс был пополнен на &e$%count%"
+    to-sender: "&3Баланс игрока &b%player% &3пополнен на &b$%count%"
+    to-reciver: "&3Ваш баланс был пополнен на &e$%count%"
 
   take: 
-    to-sender: "&2С баланса игрока &b%player% &2списано &b$%count%"
-    to-reciver: "&2С вашего баланса списано &e$%count%"
+    to-sender: "&3С баланса игрока &b%player% &3списано &b$%count%"
+    to-reciver: "&3С вашего баланса списано &e$%count%"
 
   pay:
-    to-sender: "&2Вы перечислили &b$%count% &2игроку &b%player%"
-    to-reciver: "&2Вы получили &b$%count% &2от игрока &b%player%"
+    to-sender: "&3Вы перечислили &b$%count% &3игроку &b%player%"
+    to-reciver: "&3Перевод от игрока &b%player%: %transfer%"
 
   configrefresh: "&eКонфиги перезагружены."
 
@@ -39,9 +40,9 @@ command:
   globalnullify: "&eБаланс всех игроков был обнулён."
 
   baltop:
-    empty-page: "&9Эта страница пуста"
-    head: "&9Топ игроков по балансу &8|| &9Страница: &e%page%"
-    place: "&9%place%. &b%name% &8- &e%balance%$"
+    empty-page: "&bЭта страница пуста"
+    head: "&3Топ игроков по балансу &8|| &3Страница: &e%page%/%pages%"
+    place: "&3%place%. &b%name% &3- &e%balance%$"
 
   help:
     header: "   &7Помощь по RevoEco"
@@ -53,6 +54,7 @@ command:
       balance: "Показать ваш баланс/баланс игрока"
       baltop: "Показать список самых богатых игроков"
       pay: "Перечислить валюту другому игроку"
+      history: "Показать историю транзакций"
       give: "Выдать игроку валюты"
       take: "Забрать у игрока валюту"
       nullify: "Обнулить счёт игрока"
@@ -66,3 +68,16 @@ command:
       player-opt: '[игрок]'
       sum-req: '<сумма>'
       page: '[страница]'
+
+  history:
+    empty-page: "&bЭта страница пуста"
+    header: "&3История транзакций &8|| &3Страница: &e%page%/%pages%"
+    build: "&3%date% &f| %transfer% &f- &3%action%"
+    action:
+      transfer:
+        decrease: "отправлено игроку &b%name%"
+        increase: "получено от игрока &b%name%"
+      admin:
+        decrease: "снято администратором"
+        increase: "зачислено администратором"
+      nullify: "&7баланс обнулён"

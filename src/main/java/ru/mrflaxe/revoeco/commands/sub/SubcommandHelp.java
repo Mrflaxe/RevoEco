@@ -46,6 +46,14 @@ public class SubcommandHelp extends EnhancedHelpExecutor {
                     .add()
                     
                 .newLine()
+                    .command("history")
+                    .descriptionFrom("history")
+                    .argumentFrom("player-opt")
+                    .argumentFrom("page")
+                    .permission("history")
+                    .add()
+                    
+                .newLine()
                     .command("reco give")
                     .descriptionFrom("give")
                     .argumentFrom("player-req")

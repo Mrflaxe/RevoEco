@@ -8,6 +8,9 @@ import ru.mrflaxe.revoeco.commands.CommandPay;
 import ru.mrflaxe.revoeco.commands.SubcommandHandler;
 import ru.mrflaxe.revoeco.database.Database;
 import ru.mrflaxe.revoeco.database.DatabaseManager;
+import ru.mrflaxe.revoeco.transaction.Interpreter;
+import ru.mrflaxe.revoeco.transaction.InterpreterRegistrator;
+import ru.mrflaxe.revoeco.transaction.TransactionInterpreter;
 import ru.soknight.lib.configuration.Configuration;
 import ru.soknight.lib.configuration.Messages;
 
@@ -18,6 +21,7 @@ public class RevoEco extends JavaPlugin {
     private Messages messages;
     
     private DatabaseManager databaseManager;
+    private InterpreterRegistrator interpreterRegistrator;
     
     @Override
     public void onEnable() {
@@ -32,6 +36,9 @@ public class RevoEco extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        
+        this.interpreterRegistrator = new InterpreterRegistrator();
+        registerInterpreters();
         
         registerCommands();
     }
@@ -54,8 +61,13 @@ public class RevoEco extends JavaPlugin {
         messages.refresh();
     }
     
+    private void registerInterpreters() {
+        TransactionInterpreter interpreter = new Interpreter(messages, config, this);
+        interpreterRegistrator.registerInterpreter(interpreter, "transfer", "admin", "nullify");
+    }
+    
     private void registerCommands() {
-        new SubcommandHandler(messages, databaseManager, this);
+        new SubcommandHandler(messages, databaseManager, interpreterRegistrator, this);
         
         new CommandBalance(messages, databaseManager, this);
         new CommandPay(messages, databaseManager, this);

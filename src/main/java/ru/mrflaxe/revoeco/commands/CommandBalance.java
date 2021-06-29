@@ -3,7 +3,9 @@ package ru.mrflaxe.revoeco.commands;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ru.mrflaxe.revoeco.database.DatabaseManager;
@@ -27,35 +29,46 @@ public class CommandBalance extends PlayerOnlyCommand {
 
     @Override
     protected void executeCommand(CommandSender sender, CommandArguments args) {
-        Profile profile = databaseManager.getOrCreateProfile(sender.getName());
-        int balance = profile.getBalance();
-        
-        if(args.isEmpty()) messages.sendFormatted(sender, "command.balance.self", "%count%", balance);
-        
-        else {
+        if(args.isEmpty()) {
+            Profile profile = databaseManager.getOrCreateProfile(sender.getName());
+            int balance = profile.getBalance();
+            
+            String color = balance < 0 ? "\u00a7c" : "\u00a7a";
+            messages.sendFormatted(sender, "command.balance.self", "%color", color, "%count%", balance);
+        } else {
             String name = args.get(0);
             
             if(!databaseManager.hasProfile(name)) {
                 messages.sendFormatted(sender, "error.no-profile", "%player%", name);
                 return;
             }
-            
+
             Profile otherProfile = databaseManager.getProfileById(name);
-            messages.sendFormatted(sender, "command.balance.other", "%player%", name, "%count%", otherProfile.getBalance());
+            int balance = otherProfile.getBalance();
+            
+            String color = balance < 0 ? "\u00a7c" : "\u00a7a";
+            messages.sendFormatted(sender, "command.balance.other", "%color", color, "%player%", name, "%count%", otherProfile.getBalance());
         }
     }
     
     @Override
     protected List<String> executeTabCompletion(CommandSender sender, CommandArguments args) {
+        List<String> suggestions = Bukkit.getOnlinePlayers().stream()
+                .map(Player::getName)
+                .collect(Collectors.toList());
+        
         String arg = args.get(0).toLowerCase();
         
         List<Profile> profiles = databaseManager.getAllProfiles();
         if(profiles == null) return null;
         
-        List<String> suggestions = profiles.stream()
+        List<String> OfflineRegisteredSuggestions = profiles.stream()
                 .map(Profile::getName)
+                .filter(n -> !suggestions.contains(n))
                 .filter(n -> n.startsWith(arg))
                 .collect(Collectors.toList());
+        
+        suggestions.addAll(OfflineRegisteredSuggestions);
         
         return suggestions;
     }

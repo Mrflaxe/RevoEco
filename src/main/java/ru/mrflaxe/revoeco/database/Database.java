@@ -45,6 +45,7 @@ public class Database {
         ConnectionSource source = getConnection();
                 
         TableUtils.createTableIfNotExists(source, Profile.class);
+        TableUtils.createTableIfNotExists(source, Transaction.class);
                 
         source.close();
                 

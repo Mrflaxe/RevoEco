@@ -48,6 +48,11 @@ public class CommandPay extends ArgumentableCommand {
             return;
         }
         
+        if(count == 0) {
+            messages.getAndSend(sender, "error.not-positive-arg");
+            return;
+        }
+        
         String senderName = sender.getName();
         if(!databaseManager.hasEnough(senderName, count)) {
             messages.getAndSend(sender, "error.no-enough");
@@ -57,14 +62,25 @@ public class CommandPay extends ArgumentableCommand {
         Profile senderProfile = databaseManager.getProfileById(senderName);
         Profile targetProfile = databaseManager.getOrCreateProfile(targetName);
         
+        int senderBalanceBefore = senderProfile.getBalance();
+        int targetBalanceBefore = targetProfile.getBalance();
+        
         senderProfile.add(-count);
         targetProfile.add(count);
+        
+        int senderBalanceAfter = senderProfile.getBalance();
+        int targetBalanceAfter = targetProfile.getBalance();
         
         databaseManager.updateProfile(targetProfile);
         databaseManager.updateProfile(senderProfile);
         
+        databaseManager.addTransaction(senderName, senderBalanceAfter, senderBalanceBefore, targetName, "transfer");
+        databaseManager.addTransaction(targetName, targetBalanceAfter, targetBalanceBefore, senderName, "transfer");
+        
+        String transfer = "\u00a7a+" + Math.abs(targetBalanceAfter - targetBalanceBefore);
+        
         messages.sendFormatted(sender, "command.pay.to-sender", "%count%", count, "%player%", targetName);
-        messages.sendFormatted(Bukkit.getPlayer(targetName), "command.pay.to-reciver", "%count%", count, "%player%", sender.getName());
+        messages.sendFormatted(Bukkit.getPlayer(targetName), "command.pay.to-reciver", "%count%", count, "%player%", sender.getName(), "%transfer%", transfer);
     }
     
     @Override
