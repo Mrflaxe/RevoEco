@@ -20,6 +20,8 @@ public class RevoEco extends JavaPlugin {
     private Configuration config;
     private Messages messages;
     
+    private static RevoEcoAPI api;
+    
     private DatabaseManager databaseManager;
     private InterpreterRegistrator interpreterRegistrator;
     
@@ -39,6 +41,8 @@ public class RevoEco extends JavaPlugin {
         
         this.interpreterRegistrator = new InterpreterRegistrator();
         registerInterpreters();
+        
+        api = new RevoEcoAPI(databaseManager, interpreterRegistrator);
         
         registerCommands();
     }
@@ -74,4 +78,8 @@ public class RevoEco extends JavaPlugin {
         new CommandBalancetop(messages, databaseManager, this);
     }
 
+    static RevoEcoAPI getAPI() {
+        return api;
+    }
+    
 }

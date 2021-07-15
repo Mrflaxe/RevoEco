@@ -10,7 +10,7 @@ import ru.mrflaxe.revoeco.transaction.TransactionInterpreter;
 public class RevoEcoAPI {
 
     private final DatabaseManager databaseManager;
-    private final InterpreterRegistrator interpreterRegistartor;
+    private final InterpreterRegistrator interpreterRegistrator;
     
     /**
      * This method registrate your transaction interpreter for type Id.
@@ -22,9 +22,9 @@ public class RevoEcoAPI {
      * @return true if interpreter successfully registered or false if it's registered already
      */
     public boolean registerTransactionInterpreter(TransactionInterpreter interpreter, String type) {
-        if(interpreterRegistartor.isRegistered(type)) return false;
+        if(interpreterRegistrator.isRegistered(type)) return false;
         
-        interpreterRegistartor.registerInterpreter(interpreter, type);
+        interpreterRegistrator.registerInterpreter(interpreter, type);
         return true;
     }
     
@@ -35,8 +35,8 @@ public class RevoEcoAPI {
      * @return - true if interpreter successfully unregistered or false if it's unregistered already
      */
     public boolean unregisterTransactionInterperter(String type) {
-        if(!interpreterRegistartor.isRegistered(type)) return false;
-        interpreterRegistartor.unregister(type);
+        if(!interpreterRegistrator.isRegistered(type)) return false;
+        interpreterRegistrator.unregister(type);
         return true;
     }
     
@@ -46,7 +46,7 @@ public class RevoEcoAPI {
      * @return true if registered or false if not
      */
     public boolean isRegistered(String type) {
-        return interpreterRegistartor.isRegistered(type);
+        return interpreterRegistrator.isRegistered(type);
     }
     
     
