@@ -1,6 +1,10 @@
 # RevoEco
 Another one economic plugin for Minecraft
 
+## Using
+If you want to use this plugin you need to download SKLibrary to your server:
+https://github.com/SoKnight/SKLibrary
+
 ## Dependency for Maven
 repository:
 ```xml
