@@ -5,6 +5,8 @@ Another one economic plugin for Minecraft
 If you want to use this plugin you need to download SKLibrary to your server:
 https://github.com/SoKnight/SKLibrary
 
+# This plugin does not supported from now
+
 ## Dependency for Maven
 repository:
 ```xml
